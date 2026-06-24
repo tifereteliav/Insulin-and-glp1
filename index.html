@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>סימולטור קליני: אינסולין ו-GLP-1</title>
+    <!-- Google Fonts: Rubik for modern look, Assistant for clean UI -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&family=Rubik:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="stars-background"></div>
+    <div class="glow-container">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+    </div>
+
+    <main class="game-container">
+        <!-- 1. AUTH SCREEN -->
+        <section id="screen-auth" class="screen active">
+            <div class="card glass">
+                <div class="card-header">
+                    <div class="logo-icon">🧬</div>
+                    <h1>סימולטור אנדוקריני קליני</h1>
+                    <p class="subtitle">אינסולין ו-GLP-1 receptor agonists</p>
+                </div>
+                <div class="card-body">
+                    <p class="instruction">הזן את קוד הגישה כדי לאתחל את מערכת הסימולציה:</p>
+                    <div class="input-wrapper">
+                        <input type="text" id="passcode-input" placeholder="הקלד קוד גישה..." autocomplete="off" maxlength="20">
+                        <div class="input-glow"></div>
+                    </div>
+                    <div id="auth-error" class="error-msg hidden">קוד גישה שגוי. נסה שוב.</div>
+                </div>
+                <div class="card-footer">
+                    <button id="btn-auth" class="btn btn-primary btn-glow">אימות וכניסה לסימולטור</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. INTRO SCREEN -->
+        <section id="screen-intro" class="screen">
+            <div class="card glass animate-fade-in">
+                <div class="card-header">
+                    <div class="badge green">גישה מאושרת</div>
+                    <h1>ברוכים הבאים לסימולטור הקליני</h1>
+                </div>
+                <div class="card-body text-center">
+                    <p class="intro-text">
+                        לפניך סדרת אתגרים ומקרים קליניים המבוססים על הנחיות הטיפול העדכניות ב-<strong>GLP-1 RA ובאינסולין</strong>.
+                    </p>
+                    <div class="info-box">
+                        <p class="warning-text">
+                            ⚠️ <strong>שים לב:</strong> זוהי סימולציה תחרותית. 
+                            לא יינתן משוב על נכונות התשובות במהלך המשחק. 
+                            רק בסיום הסימולציה תדע אם ענית נכון על כל השאלות לפי קוד הסיכום שתקבל.
+                        </p>
+                    </div>
+                    <p class="instructions-list-title">במהלך האתגר תבחן על:</p>
+                    <ul class="instructions-list">
+                        <li>הוראות נטילת תרופות פומיות ממשפחת ה-GLP-1 RA (ריבלסוס).</li>
+                        <li>התאמת הטיפול התרופתי הנכון למטופלים מורכבים (הריון, מחלות רקע ועוד).</li>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <button id="btn-start" class="btn btn-teal">התחל באתגר 🚀</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. CHALLENGE 1: RYBELSUS INSTRUCTIONS -->
+        <section id="screen-challenge-rybelsus" class="screen">
+            <div class="card glass">
+                <div class="progress-bar-container">
+                    <div class="progress-bar" style="width: 25%;"></div>
+                    <span class="progress-text">שלב 1 מתוך 4</span>
+                </div>
+                <div class="card-header">
+                    <h1>אתגר 1: הוראות נטילת Rybelsus</h1>
+                    <p class="subtitle">הגדר את שגרת הבוקר האופטימלית עבור מטופל המתחיל טיפול בריבלסוס (Oral Semaglutide).</p>
+                </div>
+                <div class="card-body">
+                    <!-- Fasting hours -->
+                    <div class="control-group">
+                        <label class="control-label">
+                            <span>1. משך הצום המוחלט לפני נטילת התרופה:</span>
+                            <span id="fasting-val" class="badge-value">0 שעות</span>
+                        </label>
+                        <div class="range-slider-wrapper">
+                            <input type="range" id="input-fasting" min="0" max="12" step="1" value="0" class="slider">
+                            <div class="slider-labels">
+                                <span>ללא צום</span>
+                                <span>6 שעות</span>
+                                <span>12 שעות</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fluid option -->
+                    <div class="control-group">
+                        <label class="control-label">2. נטילת התרופה תתבצע עם:</label>
+                        <div class="option-grid">
+                            <label class="option-card">
+                                <input type="radio" name="water-select" value="dry">
+                                <div class="option-card-content">
+                                    <span class="option-icon">💊</span>
+                                    <span class="option-title">בליעה יבשה</span>
+                                    <span class="option-desc">ללא מים בכלל</span>
+                                </div>
+                            </label>
+                            <label class="option-card">
+                                <input type="radio" name="water-select" value="third">
+                                <div class="option-card-content">
+                                    <span class="option-icon">💧</span>
+                                    <span class="option-title">שליש כוס מים</span>
+                                    <span class="option-desc">עד 120 מ״ל מים בלבד</span>
+                                </div>
+                            </label>
+                            <label class="option-card">
+                                <input type="radio" name="water-select" value="half">
+                                <div class="option-card-content">
+                                    <span class="option-icon">🥤</span>
+                                    <span class="option-title">חצי כוס מים</span>
+                                    <span class="option-desc">כ-150 מ״ל מים</span>
+                                </div>
+                            </label>
+                            <label class="option-card">
+                                <input type="radio" name="water-select" value="full">
+                                <div class="option-card-content">
+                                    <span class="option-icon">🥛</span>
+                                    <span class="option-title">כוס מים מלאה</span>
+                                    <span class="option-desc">250 מ״ל מים ומעלה</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Post-administration wait -->
+                    <div class="control-group">
+                        <label class="control-label">
+                            <span>3. זמן המתנה מומלץ לאחר הנטילה לפני אוכל, שתייה או תרופות אחרות:</span>
+                            <span id="wait-val" class="badge-value">0 דקות</span>
+                        </label>
+                        <div class="range-slider-wrapper">
+                            <input type="range" id="input-wait" min="0" max="60" step="5" value="0" class="slider">
+                            <div class="slider-labels">
+                                <span>מיד</span>
+                                <span>30 דק'</span>
+                                <span>60 דק'</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button id="btn-submit-rybelsus" class="btn btn-teal">אישור ושמירת שגרה</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. CHALLENGE 2: CASE 1 (Pregnancy) -->
+        <section id="screen-case-pregnancy" class="screen">
+            <div class="card glass">
+                <div class="progress-bar-container">
+                    <div class="progress-bar" style="width: 50%;"></div>
+                    <span class="progress-text">שלב 2 מתוך 4</span>
+                </div>
+                <div class="card-header">
+                    <h1>אתגר 2: דילמה קלינית - רונית</h1>
+                    <p class="subtitle">התאמת הטיפול התרופתי לפי רקע המטופלת</p>
+                </div>
+                <div class="card-body">
+                    <div class="patient-profile">
+                        <div class="patient-avatar">👩‍🍼</div>
+                        <div class="patient-details">
+                            <h3>רונית, בת 32</h3>
+                            <p><strong>מצב רפואי:</strong> סוכרת סוג 2, בשבוע 24 להריונה הראשון.</p>
+                            <p><strong>מדדים:</strong> רמת סוכר בדם בצום: 115 מג/דל.</p>
+                        </div>
+                    </div>
+
+                    <div class="question-box">
+                        <p class="question-text">מהו הטיפול המומלץ והבטוח ביותר לאיזון ערכי הסוכר של רונית במצבה הנוכחי?</p>
+                        <div class="vertical-options">
+                            <label class="quiz-option">
+                                <input type="radio" name="case-pregnancy-choice" value="glp1">
+                                <div class="quiz-option-content">
+                                    <span class="quiz-option-title">התחלת טיפול ב-GLP-1 RA (למשל אוזמפיק או סמגלוטייד)</span>
+                                    <p class="quiz-option-desc">טיפול שבועי יעיל במיוחד המעודד הפרשת אינסולין ותורם לתחושת שובע.</p>
+                                </div>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="case-pregnancy-choice" value="insulin">
+                                <div class="quiz-option-content">
+                                    <span class="quiz-option-title">התחלת טיפול באינסולין בזאלי</span>
+                                    <p class="quiz-option-desc">טיפול בטוח ומבוסס המהווה את קו הטיפול הראשון המאושר לנשים בהריון הזקוקות לאיזון.</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button id="btn-submit-pregnancy" class="btn btn-teal">המשך לתיק הבא</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. CHALLENGE 3: CASE 2 (Post-CVA & Obesity) -->
+        <section id="screen-case-cva" class="screen">
+            <div class="card glass">
+                <div class="progress-bar-container">
+                    <div class="progress-bar" style="width: 75%;"></div>
+                    <span class="progress-text">שלב 3 מתוך 4</span>
+                </div>
+                <div class="card-header">
+                    <h1>אתגר 3: דילמה קלינית - משה</h1>
+                    <p class="subtitle">התאמת הטיפול לפי גורמי סיכון ומחלות רקע</p>
+                </div>
+                <div class="card-body">
+                    <div class="patient-profile">
+                        <div class="patient-avatar">👨‍🦳</div>
+                        <div class="patient-details">
+                            <h3>משה, בן 68</h3>
+                            <p><strong>מצב רפואי:</strong> סוכרת סוג 2 לא מאוזנת, כחצי שנה לאחר אירוע מוחי (CVA).</p>
+                            <p><strong>מדדים:</strong> השמנת יתר משמעותית (BMI 34).</p>
+                        </div>
+                    </div>
+
+                    <div class="question-box">
+                        <p class="question-text">מהו קו הטיפול המתאים והמומלץ ביותר עבור משה?</p>
+                        <div class="vertical-options">
+                            <label class="quiz-option">
+                                <input type="radio" name="case-cva-choice" value="insulin">
+                                <div class="quiz-option-content">
+                                    <span class="quiz-option-title">הוספת טיפול באינסולין בזאלי</span>
+                                    <p class="quiz-option-desc">שימוש באינסולין להורדה מהירה של ערכי הסוכר, ללא קשר למשקלו או לעברו המוחי.</p>
+                                </div>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="case-cva-choice" value="glp1">
+                                <div class="quiz-option-content">
+                                    <span class="quiz-option-title">הוספת טיפול מתקדם ב-GLP-1 RA (למשל אוזמפיק או סמגלוטייד)</span>
+                                    <p class="quiz-option-desc">תרופות ממשפחה זו מציעות הגנה קרדיווסקולרית מוכחת (כולל הפחתת סיכון ל-CVA חוזר) ומסייעות בירידה במשקל.</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button id="btn-submit-cva" class="btn btn-teal">המשך לתיק הבא</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. CHALLENGE 4: CASE 3 (Thyroid MTC History) -->
+        <section id="screen-case-thyroid" class="screen">
+            <div class="card glass">
+                <div class="progress-bar-container">
+                    <div class="progress-bar" style="width: 100%;"></div>
+                    <span class="progress-text">שלב 4 מתוך 4</span>
+                </div>
+                <div class="card-header">
+                    <h1>אתגר 4: דילמה קלינית - דנה</h1>
+                    <p class="subtitle">התחשבות בהתוויות נגד בהיסטוריה המשפחתית</p>
+                </div>
+                <div class="card-body">
+                    <div class="patient-profile">
+                        <div class="patient-avatar">👩</div>
+                        <div class="patient-details">
+                            <h3>דנה, בת 45</h3>
+                            <p><strong>מצב רפואי:</strong> סוכרת סוג 2 לא מאוזנת.</p>
+                            <p><strong>היסטוריה משפחתית:</strong> אמה ואחיה חלו בעבר בסרטן בלוטת התריס מדולרי (MTC).</p>
+                        </div>
+                    </div>
+
+                    <div class="question-box">
+                        <p class="question-text">מהו הטיפול הבטוח ביותר עבור דנה, בהתחשב בהיסטוריה הרפואית המשפחתית שלה?</p>
+                        <div class="vertical-options">
+                            <label class="quiz-option">
+                                <input type="radio" name="case-thyroid-choice" value="glp1">
+                                <div class="quiz-option-content">
+                                    <span class="quiz-option-title">התחלת טיפול ב-GLP-1 RA (למשל אוזמפיק או סמגלוטייד)</span>
+                                    <p class="quiz-option-desc">טיפול פופולרי המעניק יתרונות מטבוליים רחבים ומפחית תיאבון.</p>
+                                </div>
+                            </label>
+                            <label class="quiz-option">
+                                <input type="radio" name="case-thyroid-choice" value="insulin">
+                                <div class="quiz-option-content">
+                                    <span class="quiz-option-title">התחלת טיפול באינסולין בזאלי</span>
+                                    <p class="quiz-option-desc">אינסולין אינו מעלה סיכון לגידולים מדולריים של בלוטת התריס והוא הבטוח יותר לשימוש במקרה זה.</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button id="btn-submit-thyroid" class="btn btn-teal">סיים סימולציה וקבל תוצאה</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. RESULTS SCREEN -->
+        <section id="screen-results" class="screen">
+            <div class="card glass result-card">
+                <div class="card-header">
+                    <div class="trophy-icon">🏆</div>
+                    <h1>הסימולציה הושלמה!</h1>
+                    <p class="subtitle">המערכת ניתחה את הבחירות הקליניות שלך.</p>
+                </div>
+                <div class="card-body text-center">
+                    <p class="results-info">קוד האימות הסופי שלך לתחרות הוא:</p>
+                    
+                    <div class="code-display-container">
+                        <div id="result-code" class="code-text">GLP1</div>
+                        <div class="code-glow"></div>
+                    </div>
+
+                    <p class="results-desc">
+                        הצג קוד זה למנחה או רשום אותו בטופס הרישום של התחרות.
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <button id="btn-reset" class="btn btn-primary">התחל סימולציה חדשה</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>© 2026 אתגר האנדוקרינולוגיה הדיגיטלי. פותח למטרות למידה והדרכה.</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

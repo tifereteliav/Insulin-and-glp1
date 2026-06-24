@@ -1,0 +1,700 @@
+/* CSS Design System for Insulin & GLP-1 Challenge */
+
+:root {
+    /* Color Palette */
+    --bg-dark: #0a0e1a;
+    --card-bg: rgba(15, 22, 42, 0.65);
+    --border-glass: rgba(255, 255, 255, 0.08);
+    --text-primary: #f8fafc;
+    --text-muted: #94a3b8;
+    
+    /* Neon Glow Colors */
+    --teal-glow: #00f2fe;
+    --teal-dark: #00b4db;
+    --magenta-glow: #e100ff;
+    --magenta-dark: #b800c7;
+    --gold-glow: #ffd700;
+    --red-glow: #ff3366;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, #00b4db 0%, #00f2fe 100%);
+    --gradient-insulin: linear-gradient(135deg, #b800c7 0%, #e100ff 100%);
+    --gradient-dark: linear-gradient(180deg, #0a0e17 0%, #04060c 100%);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Rubik', 'Assistant', sans-serif;
+}
+
+body {
+    background-color: var(--bg-dark);
+    background-image: var(--gradient-dark);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+    position: relative;
+    padding: 20px;
+}
+
+/* Background Stars and Glowing Orbs */
+.stars-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+        radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+        radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px);
+    background-size: 550px 550px, 350px 350px, 250px 250px;
+    background-position: 0 0, 40px 60px, 130px 270px;
+    opacity: 0.15;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.glow-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.glow-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.25;
+    mix-blend-mode: screen;
+    animation: floating 12s infinite alternate ease-in-out;
+}
+
+.orb-1 {
+    width: 350px;
+    height: 350px;
+    background: var(--teal-dark);
+    top: 15%;
+    right: 10%;
+}
+
+.orb-2 {
+    width: 400px;
+    height: 400px;
+    background: var(--magenta-dark);
+    bottom: 10%;
+    left: 10%;
+    animation-delay: -6s;
+}
+
+@keyframes floating {
+    0% { transform: translateY(0px) scale(1); }
+    100% { transform: translateY(40px) scale(1.1); }
+}
+
+/* Main Layout */
+.game-container {
+    width: 100%;
+    max-width: 680px;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 120px);
+}
+
+/* Screen Management */
+.screen {
+    display: none;
+    width: 100%;
+    animation: slideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.screen.active {
+    display: flex;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Card & Glassmorphism */
+.card {
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-glass);
+    border-radius: 24px;
+    padding: 35px;
+    width: 100%;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--teal-glow), var(--magenta-glow));
+    opacity: 0.8;
+}
+
+/* Card Header */
+.card-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo-icon {
+    font-size: 3rem;
+    margin-bottom: 12px;
+    display: inline-block;
+    filter: drop-shadow(0 0 10px var(--teal-glow));
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--text-primary);
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    font-weight: 300;
+}
+
+/* Card Body */
+.card-body {
+    margin-bottom: 30px;
+}
+
+.instruction {
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    margin-bottom: 18px;
+}
+
+/* Input Wrapper & Glow effects */
+.input-wrapper {
+    position: relative;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+#passcode-input {
+    width: 100%;
+    padding: 16px 20px;
+    font-size: 1.2rem;
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: white;
+    outline: none;
+    text-align: center;
+    letter-spacing: 1.5px;
+    transition: all 0.3s ease;
+}
+
+#passcode-input:focus {
+    border-color: var(--teal-glow);
+    box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+}
+
+.error-msg {
+    color: var(--red-glow);
+    font-size: 0.95rem;
+    margin-top: 8px;
+    text-align: center;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Progress Bar */
+.progress-bar-container {
+    position: relative;
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+    margin-bottom: 25px;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.progress-bar {
+    position: absolute;
+    height: 100%;
+    background: var(--gradient-primary);
+    left: auto;
+    right: 0;
+    transition: width 0.4s ease-in-out;
+}
+
+.progress-text {
+    position: absolute;
+    left: 0;
+    top: -20px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: bold;
+}
+
+/* Buttons */
+.card-footer {
+    display: flex;
+    justify-content: center;
+}
+
+.btn {
+    padding: 14px 32px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
+}
+
+.btn-primary {
+    background: var(--gradient-primary);
+    color: #030712;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 242, 254, 0.4);
+}
+
+.btn-teal {
+    background: var(--gradient-primary);
+    color: #030712;
+}
+
+.btn-teal:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 242, 254, 0.45);
+}
+
+.btn:active {
+    transform: translateY(1px);
+}
+
+/* Intro screen adjustments */
+.intro-text {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+.info-box {
+    background: rgba(255, 235, 59, 0.07);
+    border-right: 4px solid var(--gold-glow);
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    text-align: right;
+}
+
+.warning-text {
+    font-size: 0.95rem;
+    color: #ffd859;
+    line-height: 1.5;
+}
+
+.instructions-list-title {
+    font-weight: 600;
+    margin-bottom: 12px;
+    text-align: right;
+    color: var(--text-primary);
+}
+
+.instructions-list {
+    text-align: right;
+    padding-right: 20px;
+    margin-bottom: 30px;
+}
+
+.instructions-list li {
+    margin-bottom: 10px;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    list-style-type: square;
+}
+
+/* Form Controls & Rybelsus Sliders */
+.control-group {
+    margin-bottom: 35px;
+    text-align: right;
+}
+
+.control-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.05rem;
+    font-weight: 500;
+    margin-bottom: 15px;
+    color: var(--text-primary);
+}
+
+.badge-value {
+    background: rgba(0, 242, 254, 0.15);
+    color: var(--teal-glow);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border: 1px solid rgba(0, 242, 254, 0.3);
+    min-width: 65px;
+    text-align: center;
+}
+
+/* Sliders */
+.range-slider-wrapper {
+    position: relative;
+    padding: 10px 0;
+}
+
+.slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    outline: none;
+    transition: background 0.3s;
+}
+
+.slider::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 8px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--teal-glow);
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 242, 254, 0.8);
+    margin-top: -8px;
+    transition: transform 0.1s;
+}
+
+.slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+.slider-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 10px;
+    padding: 0 5px;
+}
+
+/* Option Grid (Rybelsus Water Selection) */
+.option-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.option-card {
+    cursor: pointer;
+    position: relative;
+}
+
+.option-card input[type="radio"] {
+    display: none;
+}
+
+.option-card-content {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-glass);
+    border-radius: 16px;
+    padding: 18px 12px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.25s ease;
+    height: 100%;
+}
+
+.option-icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+}
+
+.option-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--text-primary);
+}
+
+.option-desc {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    line-height: 1.3;
+}
+
+/* Active Radio Card */
+.option-card input[type="radio"]:checked + .option-card-content {
+    background: rgba(0, 242, 254, 0.08);
+    border-color: var(--teal-glow);
+    box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Patient profile display */
+.patient-profile {
+    display: flex;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-glass);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 25px;
+    align-items: center;
+    gap: 20px;
+}
+
+.patient-avatar {
+    font-size: 3.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid var(--border-glass);
+}
+
+.patient-details h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--teal-glow);
+}
+
+.patient-details p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+    line-height: 1.4;
+}
+
+/* Case questions options */
+.question-box {
+    margin-bottom: 20px;
+}
+
+.question-text {
+    font-size: 1.05rem;
+    font-weight: 500;
+    margin-bottom: 18px;
+    text-align: right;
+    line-height: 1.5;
+}
+
+.vertical-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.quiz-option {
+    cursor: pointer;
+}
+
+.quiz-option input[type="radio"] {
+    display: none;
+}
+
+.quiz-option-content {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-glass);
+    border-radius: 14px;
+    padding: 16px 20px;
+    text-align: right;
+    transition: all 0.25s ease;
+}
+
+.quiz-option-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: block;
+    margin-bottom: 5px;
+}
+
+.quiz-option-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+.quiz-option input[type="radio"]:checked + .quiz-option-content {
+    background: rgba(0, 242, 254, 0.08);
+    border-color: var(--teal-glow);
+    box-shadow: 0 0 15px rgba(0, 242, 254, 0.15);
+}
+
+/* Specific case designs for Insulin theme */
+#screen-case-pregnancy .badge-value,
+#screen-case-pregnancy .quiz-option input[type="radio"]:checked + .quiz-option-content {
+    background: rgba(225, 0, 255, 0.08);
+    border-color: var(--magenta-glow);
+    box-shadow: 0 0 15px rgba(225, 0, 255, 0.15);
+}
+
+/* Result screen styling */
+.result-card {
+    text-align: center;
+}
+
+.result-card::before {
+    background: linear-gradient(90deg, var(--gold-glow), var(--teal-glow));
+}
+
+.trophy-icon {
+    font-size: 4rem;
+    margin-bottom: 15px;
+    display: inline-block;
+    filter: drop-shadow(0 0 15px var(--gold-glow));
+    animation: pulse-glow 2s infinite alternate;
+}
+
+@keyframes pulse-glow {
+    0% { transform: scale(1); filter: drop-shadow(0 0 10px var(--gold-glow)); }
+    100% { transform: scale(1.08); filter: drop-shadow(0 0 25px var(--gold-glow)); }
+}
+
+.results-info {
+    font-size: 1.2rem;
+    color: var(--text-primary);
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.code-display-container {
+    position: relative;
+    display: inline-block;
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px dashed rgba(255, 215, 0, 0.3);
+    border-radius: 16px;
+    padding: 25px 60px;
+    margin-bottom: 25px;
+    overflow: hidden;
+}
+
+.code-text {
+    font-size: 3.2rem;
+    font-weight: 900;
+    letter-spacing: 3px;
+    color: var(--gold-glow);
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+    font-family: 'Rubik', sans-serif;
+    animation: text-pulse 2s infinite;
+}
+
+@keyframes text-pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.02); opacity: 0.9; }
+}
+
+.results-desc {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+/* Footer style */
+.footer {
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    z-index: 1;
+}
+
+/* Responsiveness adjustments */
+@media(max-width: 600px) {
+    body {
+        padding: 12px;
+    }
+    .card {
+        padding: 20px 15px;
+    }
+    h1 {
+        font-size: 1.5rem;
+    }
+    .logo-icon {
+        font-size: 2.5rem;
+    }
+    .option-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    .patient-profile {
+        flex-direction: column;
+        text-align: center;
+        padding: 15px;
+    }
+    .patient-details {
+        text-align: center;
+    }
+    .code-display-container {
+        padding: 20px 40px;
+    }
+    .code-text {
+        font-size: 2.5rem;
+    }
+}
