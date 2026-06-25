@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Auth validation
     function verifyPasscode() {
         const codeEntered = passcodeInput.value.trim();
-        if (codeEntered === 'Insulin2026') {
+        if (codeEntered === '1212') {
             authError.classList.add('hidden');
             showScreen(screens.intro);
         } else {
@@ -182,8 +182,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // MTC correct choice is 'insulin' (GLP-1 is contraindicated in MTC)
-        state.thyroidCorrect = (selectedOption.value === 'insulin');
+        // Case 3 correct choice is 'glp1' (Adding weekly GLP-1 RA is more appropriate for weight/postprandial spikes than aggressive basal titration)
+        state.thyroidCorrect = (selectedOption.value === 'glp1');
 
         // Calculate and show results
         compileResults();
