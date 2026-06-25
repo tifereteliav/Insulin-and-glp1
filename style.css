@@ -834,14 +834,16 @@ h1 {
 
 /* Distinctive glow colors for pregnancy/insulin themes */
 .timeline-step.active[data-step="2"] .step-node,
-.timeline-step.active[data-step="4"] .step-node {
+.timeline-step.active[data-step="4"] .step-node,
+.timeline-step.active[data-step="5"] .step-node {
     border-color: var(--magenta-glow);
     background: rgba(225, 0, 255, 0.1);
     box-shadow: 0 0 18px rgba(225, 0, 255, 0.4);
 }
 
 .timeline-step.active[data-step="2"] .step-label,
-.timeline-step.active[data-step="4"] .step-label {
+.timeline-step.active[data-step="4"] .step-label,
+.timeline-step.active[data-step="5"] .step-label {
     color: var(--magenta-glow);
     text-shadow: 0 0 8px rgba(225, 0, 255, 0.3);
 }

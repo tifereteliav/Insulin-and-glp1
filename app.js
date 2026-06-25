@@ -25,7 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
         rybelsusCorrect: false,
         pregnancyCorrect: false,
         cvaCorrect: false,
-        thyroidCorrect: false
+        thyroidCorrect: false,
+        suddenCorrect: false
     };
 
     // DOM Elements
@@ -36,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
         pregnancy: document.getElementById('screen-case-pregnancy'),
         cva: document.getElementById('screen-case-cva'),
         thyroid: document.getElementById('screen-case-thyroid'),
+        sudden: document.getElementById('screen-case-sudden-onset'),
         results: document.getElementById('screen-results')
     };
 
@@ -58,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnSubmitPregnancy = document.getElementById('btn-submit-pregnancy');
     const btnSubmitCva = document.getElementById('btn-submit-cva');
     const btnSubmitThyroid = document.getElementById('btn-submit-thyroid');
+    const btnSubmitSudden = document.getElementById('btn-submit-sudden');
 
     // Results elements
     const resultCode = document.getElementById('result-code');
@@ -221,6 +224,21 @@ document.addEventListener('DOMContentLoaded', () => {
         // Case 3 correct choice is 'glp1' (Adding weekly GLP-1 RA is more appropriate for weight/postprandial spikes than aggressive basal titration)
         state.thyroidCorrect = (selectedOption.value === 'glp1');
 
+        // Proceed to Sudden Onset case
+        showScreen(screens.sudden);
+    });
+
+    // Case 4: Sudden Onset & Lean Hyperglycemia Submit
+    btnSubmitSudden.addEventListener('click', () => {
+        const selectedOption = document.querySelector('input[name="case-sudden-choice"]:checked');
+        if (!selectedOption) {
+            alert('אנא בחר אחת מהאפשרויות על מנת להמשיך');
+            return;
+        }
+
+        // Case 4 correct choice is 'insulin' (Basal insulin is required due to severe hyperglycemia and lean/sudden presentation suggesting Type 1/LADA)
+        state.suddenCorrect = (selectedOption.value === 'insulin');
+
         // Calculate and show results
         compileResults();
     });
@@ -230,7 +248,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const allCorrect = state.rybelsusCorrect && 
                            state.pregnancyCorrect && 
                            state.cvaCorrect && 
-                           state.thyroidCorrect;
+                           state.thyroidCorrect && 
+                           state.suddenCorrect;
 
         const finalCode = allCorrect ? 'Insulin2026' : 'GLP1';
 
@@ -290,6 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
         state.pregnancyCorrect = false;
         state.cvaCorrect = false;
         state.thyroidCorrect = false;
+        state.suddenCorrect = false;
 
         // Reset Auth inputs
         passcodeInput.value = '';
@@ -313,6 +333,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const checkedThyroid = document.querySelector('input[name="case-thyroid-choice"]:checked');
         if (checkedThyroid) checkedThyroid.checked = false;
+
+        const checkedSudden = document.querySelector('input[name="case-sudden-choice"]:checked');
+        if (checkedSudden) checkedSudden.checked = false;
 
         // Back to authentication
         showScreen(screens.auth);
