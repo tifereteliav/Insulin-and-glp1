@@ -907,3 +907,41 @@ h1 {
     animation: flash-glow 0.8s ease-out;
 }
 
+/* Copy Code Button */
+.btn-copy {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    padding: 8px 18px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 15px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+    z-index: 10;
+    position: relative;
+}
+
+.btn-copy:hover {
+    background: rgba(255, 215, 0, 0.1);
+    border-color: var(--gold-glow);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+.btn-copy:active {
+    transform: translateY(1px);
+}
+
+.btn-copy.copied {
+    background: rgba(76, 175, 80, 0.15) !important;
+    border-color: #4caf50 !important;
+    color: #4caf50 !important;
+    box-shadow: 0 0 10px rgba(76, 175, 80, 0.3) !important;
+}
+
+

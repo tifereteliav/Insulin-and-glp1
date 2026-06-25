@@ -341,6 +341,26 @@ document.addEventListener('DOMContentLoaded', () => {
         showScreen(screens.auth);
     });
 
+    // Copy code button handler
+    const btnCopyCode = document.getElementById('btn-copy-code');
+    if (btnCopyCode) {
+        btnCopyCode.addEventListener('click', () => {
+            const code = resultCode.textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                // Success feedback
+                btnCopyCode.textContent = '✓ הועתק!';
+                btnCopyCode.classList.add('copied');
+                
+                setTimeout(() => {
+                    btnCopyCode.textContent = '📋 העתק קוד';
+                    btnCopyCode.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+            });
+        });
+    }
+
     // Initialize values
     updateFastingVal();
     updateWaitVal();
