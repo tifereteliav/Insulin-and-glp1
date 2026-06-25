@@ -251,7 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
                            state.thyroidCorrect && 
                            state.suddenCorrect;
 
-        const finalCode = allCorrect ? 'Insulin2026' : 'GLP1';
+        const finalCode = allCorrect ? 'insulin' : 'GLP1';
 
         // Pre-configure coloring before decryption
         if (allCorrect) {
