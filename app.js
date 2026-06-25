@@ -1,6 +1,25 @@
 // Game State and Logic for Rybelsus & Insulin Clinical Challenge
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Generate floating medical particles
+    const particlesContainer = document.getElementById('particles-container');
+    if (particlesContainer) {
+        for (let i = 0; i < 20; i++) {
+            const particle = document.createElement('div');
+            const isInsulin = Math.random() > 0.5;
+            particle.className = `particle ${isInsulin ? 'insulin' : ''}`;
+            
+            const size = Math.random() * 50 + 15;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.animationDuration = `${Math.random() * 12 + 8}s`;
+            particle.style.animationDelay = `${Math.random() * -15}s`;
+            
+            particlesContainer.appendChild(particle);
+        }
+    }
+
     // Game State
     const state = {
         rybelsusCorrect: false,
@@ -46,14 +65,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Helper Functions ---
     
-    // Smooth screen switching
+    // Smooth screen switching with medical scanning effect
     function showScreen(screenToShow) {
         // Hide all screens
         Object.values(screens).forEach(screen => {
             screen.classList.remove('active');
         });
+        
         // Show selected screen
         screenToShow.classList.add('active');
+        
+        // Trigger scanning transition on the newly shown card
+        const card = screenToShow.querySelector('.card');
+        if (card) {
+            const existingScanner = card.querySelector('.scanner-line');
+            if (existingScanner) existingScanner.remove();
+            
+            const scanner = document.createElement('div');
+            scanner.className = 'scanner-line scan-active';
+            card.appendChild(scanner);
+            
+            setTimeout(() => {
+                scanner.remove();
+            }, 1200);
+        }
+        
         // Scroll to top
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -189,24 +225,62 @@ document.addEventListener('DOMContentLoaded', () => {
         compileResults();
     });
 
-    // Compile results and calculate final passcode
+    // Compile results and calculate final passcode with decryption terminal animation
     function compileResults() {
         const allCorrect = state.rybelsusCorrect && 
                            state.pregnancyCorrect && 
                            state.cvaCorrect && 
                            state.thyroidCorrect;
 
+        const finalCode = allCorrect ? 'Insulin2026' : 'GLP1';
+
+        // Pre-configure coloring before decryption
         if (allCorrect) {
-            resultCode.textContent = 'Insulin2026';
             resultCode.style.color = 'var(--gold-glow)';
             resultCode.style.textShadow = '0 0 20px rgba(255, 215, 0, 0.8)';
         } else {
-            resultCode.textContent = 'GLP1';
             resultCode.style.color = 'var(--teal-glow)';
             resultCode.style.textShadow = '0 0 20px rgba(0, 242, 254, 0.8)';
         }
 
         showScreen(screens.results);
+        decryptCode(finalCode);
+    }
+
+    // Alphanumeric Terminal Decryption Effect
+    function decryptCode(finalCode) {
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        let iterations = 0;
+        const intervalDuration = 60; // ms
+        const totalDuration = 1200; // ms
+        const maxIterations = totalDuration / intervalDuration;
+        
+        resultCode.style.fontFamily = 'monospace';
+        
+        const interval = setInterval(() => {
+            resultCode.textContent = finalCode
+                .split("")
+                .map((char, index) => {
+                    if (index < (iterations / maxIterations) * finalCode.length) {
+                        return finalCode[index];
+                    }
+                    return chars[Math.floor(Math.random() * chars.length)];
+                })
+                .join("");
+            
+            if (iterations >= maxIterations) {
+                clearInterval(interval);
+                resultCode.textContent = finalCode;
+                resultCode.style.fontFamily = ''; // revert to default Heebo/Rubik
+                
+                // Add success glow flash
+                resultCode.classList.add('flash-success');
+                setTimeout(() => {
+                    resultCode.classList.remove('flash-success');
+                }, 1000);
+            }
+            iterations++;
+        }, intervalDuration);
     }
 
     // Reset game state and return to auth
