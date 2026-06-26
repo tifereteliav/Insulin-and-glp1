@@ -111,7 +111,11 @@
                             <span id="fasting-val" class="badge-value">0 שעות</span>
                         </label>
                         <div class="range-slider-wrapper">
-                            <input type="range" id="input-fasting" min="0" max="12" step="1" value="0" class="slider">
+                            <div class="range-slider-container">
+                                <button type="button" class="slider-btn dec" id="btn-fasting-dec">−</button>
+                                <input type="range" id="input-fasting" min="0" max="12" step="1" value="0" class="slider">
+                                <button type="button" class="slider-btn inc" id="btn-fasting-inc">+</button>
+                            </div>
                             <div class="slider-labels">
                                 <span>ללא צום</span>
                                 <span>6 שעות</span>
@@ -159,7 +163,11 @@
                             <span id="wait-val" class="badge-value">0 דקות</span>
                         </label>
                         <div class="range-slider-wrapper">
-                            <input type="range" id="input-wait" min="0" max="60" step="5" value="0" class="slider">
+                            <div class="range-slider-container">
+                                <button type="button" class="slider-btn dec" id="btn-wait-dec">−</button>
+                                <input type="range" id="input-wait" min="0" max="60" step="5" value="0" class="slider">
+                                <button type="button" class="slider-btn inc" id="btn-wait-inc">+</button>
+                            </div>
                             <div class="slider-labels">
                                 <span>מיד</span>
                                 <span>30 דק'</span>
@@ -169,7 +177,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <button id="btn-submit-rybelsus" class="btn btn-teal">אישור ושמירת שגרה</button>
+                    <button id="btn-submit-rybelsus" class="btn btn-teal">השלב הבא</button>
                 </div>
             </div>
         </section>
@@ -346,7 +354,7 @@
                             <h3>יוסי, בן 54</h3>
                             <p><strong>מצב רפואי:</strong> סוכרת סוג 2, מטופל במטפורמין ואינסולין בזאלי 30 יחידות. בדיקת עיניים תקינה ללא רטינופתיה.</p>
                             <p><strong>מדדים:</strong> השמנת יתר (BMI 35), ערך HbA1c: 8.5%.</p>
-                            <p><strong>פרופיל סוכר:</strong> בצום בבוקר סביב 140 מג/דל, לאחר האוכל סביב 250 מג/דל.</p>
+                            <p><strong>פרופיל סוכר:</strong> בצום בבוקר סביב 130 מג/דל, לאחר האוכל סביב 250 מג/דל.</p>
                         </div>
                     </div>
 

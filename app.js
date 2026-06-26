@@ -361,6 +361,46 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Fasting slider adjustment buttons
+    const btnFastingDec = document.getElementById('btn-fasting-dec');
+    const btnFastingInc = document.getElementById('btn-fasting-inc');
+    if (btnFastingDec && btnFastingInc) {
+        btnFastingDec.addEventListener('click', () => {
+            let val = parseInt(inputFasting.value, 10);
+            if (val > 0) {
+                inputFasting.value = val - 1;
+                updateFastingVal();
+            }
+        });
+        btnFastingInc.addEventListener('click', () => {
+            let val = parseInt(inputFasting.value, 10);
+            if (val < 12) {
+                inputFasting.value = val + 1;
+                updateFastingVal();
+            }
+        });
+    }
+
+    // Wait slider adjustment buttons
+    const btnWaitDec = document.getElementById('btn-wait-dec');
+    const btnWaitInc = document.getElementById('btn-wait-inc');
+    if (btnWaitDec && btnWaitInc) {
+        btnWaitDec.addEventListener('click', () => {
+            let val = parseInt(inputWait.value, 10);
+            if (val > 0) {
+                inputWait.value = val - 5;
+                updateWaitVal();
+            }
+        });
+        btnWaitInc.addEventListener('click', () => {
+            let val = parseInt(inputWait.value, 10);
+            if (val < 60) {
+                inputWait.value = val + 5;
+                updateWaitVal();
+            }
+        });
+    }
+
     // Initialize values
     updateFastingVal();
     updateWaitVal();
